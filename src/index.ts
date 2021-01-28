@@ -124,7 +124,6 @@ export class UsbBBbootScanner extends EventEmitter {
   private boundAttachDevice: (device: usb.Device) => Promise<void>;
   private boundDetachDevice: (device: usb.Device) => void;
   private interval: number | undefined;
-  private stepCounter: number = 0;
 
   // We use both events ('attach' and 'detach') and polling getDeviceList() on usb.
   // We don't know which one will trigger the this.attachDevice call.
@@ -214,16 +213,15 @@ export class UsbBBbootScanner extends EventEmitter {
       return;
     }
     if (isROMUSBDevice(device.deviceDescriptor.idVendor, device.deviceDescriptor.idProduct)) {
-      this.stepCounter = 0;
-      this.process(device, 'u-boot-spl.bin');
+      this.process(device, 'u-boot-spl.bin', 0);
     }
     if (isSPLUSBDevice(device.deviceDescriptor.idVendor, device.deviceDescriptor.idProduct)) {
       setTimeout(() => {
-        this.process(device, 'u-boot.img');
+        this.process(device, 'u-boot.img', 2);
       }, 500);
     }
   }
-  private process(device: usb.Device, fileName: string): void {
+  private process(device: usb.Device, fileName: string, step: number): void {
     try {
       device.open();
       let rndisInEndpoint: usb.InEndpoint;
@@ -251,12 +249,12 @@ export class UsbBBbootScanner extends EventEmitter {
           case 'BOOTP':
             const { bootPBuff, bootPServerConfig } = message.getBOOTPResponse(data, serverConfig);
             serverConfig = bootPServerConfig;
-            this.transfer(device, outEndpoint, request, bootPBuff, this.stepCounter++);
+            this.transfer(device, outEndpoint, request, bootPBuff, step++);
             break;
           case 'ARP':
             const { arpBuff, arpServerConfig } = message.getARResponse(data, serverConfig);
             serverConfig = arpServerConfig;
-            this.transfer(device, outEndpoint, request, arpBuff, this.stepCounter++);
+            this.transfer(device, outEndpoint, request, arpBuff, step++);
             break;
           case 'TFTP':
             serverConfig = message.getBootFile(data, serverConfig);
@@ -264,9 +262,9 @@ export class UsbBBbootScanner extends EventEmitter {
               // tslint:disable-next-line
               const { tftpBuff, tftpServerConfig } = message.getTFTPData(serverConfig);
               serverConfig = tftpServerConfig;
-              this.transfer(device, outEndpoint, request, tftpBuff, this.stepCounter++);
+              this.transfer(device, outEndpoint, request, tftpBuff, step++);
             } else {
-              this.transfer(device, outEndpoint, request, message.getTFTPError(serverConfig), this.stepCounter);
+              this.transfer(device, outEndpoint, request, message.getTFTPError(serverConfig), step);
             }
             break;
           case 'TFTP_Data':
@@ -274,7 +272,7 @@ export class UsbBBbootScanner extends EventEmitter {
             serverConfig = tftpServerConfig;
             if (serverConfig.tftp) {
               if (serverConfig.tftp.blocks <= serverConfig.tftp.blocks) {
-                this.transfer(device, outEndpoint, request, tftpBuff, this.stepCounter++);
+                this.transfer(device, outEndpoint, request, tftpBuff, step++);
               } else {
                 if (platform === 'win32' || platform === 'darwin') {
                   rndisInEndpoint.stopPoll();
@@ -340,18 +338,18 @@ export class UsbBBbootScanner extends EventEmitter {
 // tslint:disable-next-line
 export class UsbBBbootDevice extends EventEmitter {
   public static readonly LAST_STEP = 1124;
-  private STEP = 0;
+  private _step = 0;
   constructor(public portId: string) {
     super();
   }
   get progress() {
-    return Math.round((this.STEP / UsbBBbootDevice.LAST_STEP) * 100);
+    return Math.round((this._step / UsbBBbootDevice.LAST_STEP) * 100);
   }
   get step() {
-    return this.STEP;
+    return this._step;
   }
   set step(step: number) {
-    this.STEP = step;
+    this._step = step;
     this.emit('progress', this.progress);
   }
 }
