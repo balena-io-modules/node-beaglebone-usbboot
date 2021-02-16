@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node lib/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json",
+    "format": "balena-lint --typescript --fix src",
+    "lint": "balena-lint --typescript src",
     "build": "rimraf lib && tsc",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint",
@@ -46,14 +46,12 @@
     "schemapack": "^1.4.2"
   },
   "devDependencies": {
+    "@balena/lint": "^5.4.1",
     "@types/debug": "0.0.30",
     "@types/node": "^12.20.1",
     "@types/usb": "^1.5.1",
-    "prettier": "^1.19.1",
     "rimraf": "^2.6.2",
     "ts-node": "^9.1.1",
-    "tslint": "^5.20.1",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.1.5"
   },
   "bugs": {
