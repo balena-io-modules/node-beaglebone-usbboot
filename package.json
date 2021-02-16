@@ -5,13 +5,11 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "start": "node lib/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "format": "balena-lint --typescript --fix src",
     "lint": "balena-lint --typescript src",
-    "build": "rimraf lib && tsc",
+    "build": "npm run lint && rimraf lib && tsc",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run lint"
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "lib/**/*",
