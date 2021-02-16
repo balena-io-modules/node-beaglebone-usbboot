@@ -43,7 +43,6 @@
     "binary-parser-encoder": "^1.4.5",
     "debug": "^3.1.0",
     "endian-toggle": "0.0.0",
-    "os": "^0.1.1",
     "schemapack": "^1.4.2"
   },
   "devDependencies": {
