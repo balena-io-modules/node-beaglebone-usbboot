@@ -24,7 +24,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/parthi-g/node-beaglebone-usbboot.git"
+    "url": "git+https://github.com/balena-io-modules/node-beaglebone-usbboot.git"
   },
   "keywords": [
     "beaglebone",
@@ -58,7 +58,7 @@
     "typescript": "^4.1.5"
   },
   "bugs": {
-    "url": "https://github.com/parthi-g/node-beaglebone-usbboot/issues"
+    "url": "https://github.com/balena-io-modules/node-beaglebone-usbboot/issues"
   },
-  "homepage": "https://github.com/parthi-g/node-beaglebone-usbboot#readme"
+  "homepage": "https://github.com/balena-io-modules/node-beaglebone-usbboot#readme"
 }
