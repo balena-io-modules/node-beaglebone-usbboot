@@ -1,0 +1,57 @@
+- version: 1.0.1
+  date: 2021-02-16T18:44:10Z
+  commits:
+    - hash: a7c8d618c2bfc9da1568839aed654a56fe316e88
+      author: Zane Hitchcox
+      footers:
+        change-type: patch
+      subject: remove prettier
+      body:
+    - hash: 470d4524fe4e201809d7401493d9ca039ead0fe1
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Update changelog file for versionbot
+      body:
+    - hash: eaafc4c3d37130aac7baec8055e01260d1b24904
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Update @types/node to v12, @types/usb is a dev dependency
+      body:
+    - hash: 676ce8163cdc3e50d4766d306298805d03acabbb
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Update typescript to v4 and ts-ndoe to v9
+      body:
+    - hash: f70525650eff397095bd3483be60c69081e772f9
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Update git repository address in package.json
+      body:
+    - hash: 86a2921c69476f6a48a37071680ed0fbef5cc7e7
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Remove os dependency
+      body:
+    - hash: 03e87ac011d53fe7b28aefb552cd2e5e23dca8a4
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Replace tslint with @balena/lint
+      body:
+    - hash: d5be27041a4e8d6dce82258a1ce86465a28e443b
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Remove version scripts
+      body:
+    - hash: 2d88ea63947e9414ffa5400466762b26489dc864
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Lint and build in prepublish script
+      body:
