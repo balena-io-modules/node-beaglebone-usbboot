@@ -1,57 +1,125 @@
+- commits:
+    - subject: Stop sending file chunks when the file was fully sent
+      hash: a85609c1d81c19364e5585e6d6b3289571c4210a
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+    - subject: Ignore package-lock.json file
+      hash: c6cee6ece3fea88d1c810d0ef3ad9831448d8dc7
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+    - subject: Fix progress going from 18 to 0 then to 100
+      hash: 9cc2d2c5371eb3dbcb771cc884f40bdd0bd69c18
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+    - subject: 'Transform switch into if / else, remove tslint: disable comment'
+      hash: 39d7eee6074fa48679091cd21f27d041cd6b551e
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+    - subject: >-
+        Add some typing, stop returning duplicated references, actually wait for
+        transfers to complete
+      hash: 50b206480cc2ca772a7524d7da3201cd4ce017f9
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+    - subject: 'Remove unused tslint:disable comment'
+      hash: cea4197d4a98384ee40ea11c46f7bebdaeddbce7
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+    - subject: Remove ts-ignore comment next to setInterval
+      hash: 504eb3ae3a69dd4d13735ebf49df4b8f951e7e98
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+    - subject: Don't detect beagle bones that are already mass storage devices
+      hash: 38a283b29f72b6ac99e62912a5c3262850132675
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+    - subject: Add versionbot yml changelog file
+      hash: ac26de8d2d50065f17f46a9319bb478e2d847043
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+  version: 1.0.2
+  date: 2021-02-17T17:38:21.433Z
 - version: 1.0.1
-  date: 2021-02-16T18:44:10Z
+  date: 2021-02-16T18:44:10.000Z
   commits:
     - hash: a7c8d618c2bfc9da1568839aed654a56fe316e88
       author: Zane Hitchcox
       footers:
         change-type: patch
       subject: remove prettier
-      body:
+      body: null
     - hash: 470d4524fe4e201809d7401493d9ca039ead0fe1
       author: Alexis Svinartchouk
       footers:
         change-type: patch
       subject: Update changelog file for versionbot
-      body:
+      body: null
     - hash: eaafc4c3d37130aac7baec8055e01260d1b24904
       author: Alexis Svinartchouk
       footers:
         change-type: patch
-      subject: Update @types/node to v12, @types/usb is a dev dependency
-      body:
+      subject: 'Update @types/node to v12, @types/usb is a dev dependency'
+      body: null
     - hash: 676ce8163cdc3e50d4766d306298805d03acabbb
       author: Alexis Svinartchouk
       footers:
         change-type: patch
       subject: Update typescript to v4 and ts-ndoe to v9
-      body:
+      body: null
     - hash: f70525650eff397095bd3483be60c69081e772f9
       author: Alexis Svinartchouk
       footers:
         change-type: patch
       subject: Update git repository address in package.json
-      body:
+      body: null
     - hash: 86a2921c69476f6a48a37071680ed0fbef5cc7e7
       author: Alexis Svinartchouk
       footers:
         change-type: patch
       subject: Remove os dependency
-      body:
+      body: null
     - hash: 03e87ac011d53fe7b28aefb552cd2e5e23dca8a4
       author: Alexis Svinartchouk
       footers:
         change-type: patch
       subject: Replace tslint with @balena/lint
-      body:
+      body: null
     - hash: d5be27041a4e8d6dce82258a1ce86465a28e443b
       author: Alexis Svinartchouk
       footers:
         change-type: patch
       subject: Remove version scripts
-      body:
+      body: null
     - hash: 2d88ea63947e9414ffa5400466762b26489dc864
       author: Alexis Svinartchouk
       footers:
         change-type: patch
       subject: Lint and build in prepublish script
-      body:
+      body: null

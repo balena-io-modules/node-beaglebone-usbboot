@@ -1,6 +1,6 @@
 {
   "name": "@balena/node-beaglebone-usbboot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Transforms BeagleBone to mass storage device",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
