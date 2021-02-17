@@ -205,10 +205,16 @@ export class UsbBBbootScanner extends EventEmitter {
 		}
 	}
 
+	private incrementStep(device: usb.Device) {
+		const usbBBbootDevice = this.getOrCreate(device);
+		this.step(device, usbBBbootDevice.step + 1);
+	}
+
 	private get(device: usb.Device): UsbBBbootDevice | undefined {
 		const key = devicePortId(device);
 		return this.usbBBbootDevices.get(key);
 	}
+
 	private getOrCreate(device: usb.Device): UsbBBbootDevice {
 		const key = devicePortId(device);
 		let usbBBbootDevice = this.usbBBbootDevices.get(key);
@@ -254,7 +260,7 @@ export class UsbBBbootScanner extends EventEmitter {
 				device.deviceDescriptor.idProduct,
 			)
 		) {
-			this.process(device, 'u-boot-spl.bin', 0);
+			this.process(device, 'u-boot-spl.bin');
 		}
 		if (
 			isSPLUSBDevice(
@@ -263,11 +269,11 @@ export class UsbBBbootScanner extends EventEmitter {
 			)
 		) {
 			setTimeout(() => {
-				this.process(device, 'u-boot.img', 2);
+				this.process(device, 'u-boot.img');
 			}, 500);
 		}
 	}
-	private process(device: usb.Device, fileName: string, step: number): void {
+	private process(device: usb.Device, fileName: string): void {
 		try {
 			device.open();
 			let rndisInEndpoint: usb.InEndpoint;
@@ -286,33 +292,32 @@ export class UsbBBbootScanner extends EventEmitter {
 				debug('InEndpoint Error', error);
 			});
 
+			const message = new Message();
 			inEndpoint.on('data', async (data: Buffer) => {
-				const message = new Message();
 				const request = message.identify(data);
 				if (request === 'BOOTP') {
 					const bootPBuff = message.getBOOTPResponse(data, serverConfig);
-					await this.transfer(device, outEndpoint, bootPBuff, step++);
+					await this.transfer(device, outEndpoint, bootPBuff);
 				} else if (request === 'ARP') {
 					const arpBuff = message.getARResponse(data, serverConfig);
-					await this.transfer(device, outEndpoint, arpBuff, step++);
+					await this.transfer(device, outEndpoint, arpBuff);
 				} else if (request === 'TFTP') {
 					message.getBootFile(data, serverConfig);
 					if (!serverConfig.tftp.fileError) {
 						const tftpBuff = message.getTFTPData(serverConfig);
-						await this.transfer(device, outEndpoint, tftpBuff, step++);
+						await this.transfer(device, outEndpoint, tftpBuff);
 					} else {
 						await this.transfer(
 							device,
 							outEndpoint,
 							message.getTFTPError(serverConfig),
-							step,
 						);
 					}
 				} else if (request === 'TFTP_Data') {
 					const tftpBuff = message.getTFTPData(serverConfig);
 					if (serverConfig.tftp) {
 						if (serverConfig.tftp.blocks <= serverConfig.tftp.blocks) {
-							await this.transfer(device, outEndpoint, tftpBuff, step++);
+							await this.transfer(device, outEndpoint, tftpBuff);
 						} else {
 							if (platform === 'win32' || platform === 'darwin') {
 								rndisInEndpoint.stopPoll();
@@ -334,7 +339,6 @@ export class UsbBBbootScanner extends EventEmitter {
 		device: usb.Device,
 		outEndpoint: usb.OutEndpoint,
 		response: Buffer,
-		step: number,
 	) {
 		await new Promise<void>((resolve, reject) => {
 			outEndpoint.transfer(response, (error?: Error) => {
@@ -346,7 +350,7 @@ export class UsbBBbootScanner extends EventEmitter {
 				}
 			});
 		});
-		this.step(device, step);
+		this.incrementStep(device);
 	}
 	private detachDevice(device: usb.Device): void {
 		this.attachedDeviceIds.delete(getDeviceId(device));
@@ -371,6 +375,7 @@ export class UsbBBbootScanner extends EventEmitter {
 		}, DEVICE_UNPLUG_TIMEOUT);
 	}
 }
+
 // tslint:disable-next-line
 export class UsbBBbootDevice extends EventEmitter {
 	public static readonly LAST_STEP = 1124;
@@ -379,7 +384,7 @@ export class UsbBBbootDevice extends EventEmitter {
 		super();
 	}
 	get progress() {
-		return Math.round((this._step / UsbBBbootDevice.LAST_STEP) * 100);
+		return Math.floor((this._step / UsbBBbootDevice.LAST_STEP) * 100);
 	}
 	get step() {
 		return this._step;
