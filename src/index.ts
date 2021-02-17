@@ -289,48 +289,40 @@ export class UsbBBbootScanner extends EventEmitter {
 			inEndpoint.on('data', async (data: Buffer) => {
 				const message = new Message();
 				const request = message.identify(data);
-				switch (request) {
-					case 'unidentified':
-						break;
-					case 'BOOTP':
-						const bootPBuff = message.getBOOTPResponse(data, serverConfig);
-						await this.transfer(device, outEndpoint, bootPBuff, step++);
-						break;
-					case 'ARP':
-						const arpBuff = message.getARResponse(data, serverConfig);
-						await this.transfer(device, outEndpoint, arpBuff, step++);
-						break;
-					case 'TFTP':
-						message.getBootFile(data, serverConfig);
-						if (!serverConfig.tftp.fileError) {
-							// tslint:disable-next-line
-							const tftpBuff = message.getTFTPData(serverConfig);
+				if (request === 'BOOTP') {
+					const bootPBuff = message.getBOOTPResponse(data, serverConfig);
+					await this.transfer(device, outEndpoint, bootPBuff, step++);
+				} else if (request === 'ARP') {
+					const arpBuff = message.getARResponse(data, serverConfig);
+					await this.transfer(device, outEndpoint, arpBuff, step++);
+				} else if (request === 'TFTP') {
+					message.getBootFile(data, serverConfig);
+					if (!serverConfig.tftp.fileError) {
+						const tftpBuff = message.getTFTPData(serverConfig);
+						await this.transfer(device, outEndpoint, tftpBuff, step++);
+					} else {
+						await this.transfer(
+							device,
+							outEndpoint,
+							message.getTFTPError(serverConfig),
+							step,
+						);
+					}
+				} else if (request === 'TFTP_Data') {
+					const tftpBuff = message.getTFTPData(serverConfig);
+					if (serverConfig.tftp) {
+						if (serverConfig.tftp.blocks <= serverConfig.tftp.blocks) {
 							await this.transfer(device, outEndpoint, tftpBuff, step++);
 						} else {
-							await this.transfer(
-								device,
-								outEndpoint,
-								message.getTFTPError(serverConfig),
-								step,
-							);
-						}
-						break;
-					case 'TFTP_Data':
-						const tftpBuff = message.getTFTPData(serverConfig);
-						if (serverConfig.tftp) {
-							if (serverConfig.tftp.blocks <= serverConfig.tftp.blocks) {
-								await this.transfer(device, outEndpoint, tftpBuff, step++);
-							} else {
-								if (platform === 'win32' || platform === 'darwin') {
-									rndisInEndpoint.stopPoll();
-								}
-								inEndpoint.stopPoll();
-								device.close();
+							if (platform === 'win32' || platform === 'darwin') {
+								rndisInEndpoint.stopPoll();
 							}
+							inEndpoint.stopPoll();
+							device.close();
 						}
-						break;
-					default:
-						debug('Request', request);
+					}
+				} else {
+					debug('Request', request);
 				}
 			});
 		} catch (error) {
