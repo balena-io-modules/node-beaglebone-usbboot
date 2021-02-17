@@ -273,68 +273,53 @@ export class UsbBBbootScanner extends EventEmitter {
 			let rndisInEndpoint: usb.InEndpoint;
 			if (platform === 'win32' || platform === 'darwin') {
 				rndisInEndpoint = initializeRNDIS(device);
-				rndisInEndpoint.on('error', (error: any) => {
+				rndisInEndpoint.on('error', (error: Error) => {
 					debug('RNDIS InEndpoint Error', error);
 				});
 			}
 			const { inEndpoint, outEndpoint } = initializeDevice(device);
-			let serverConfig: any = {};
+			const serverConfig: any = {};
 			serverConfig.bootpFile = fileName;
 			inEndpoint.startPoll(1, 500); // MAXBUFF
 
-			inEndpoint.on('error', (error: any) => {
+			inEndpoint.on('error', (error: Error) => {
 				debug('InEndpoint Error', error);
 			});
 
-			inEndpoint.on('data', (data: any) => {
+			inEndpoint.on('data', async (data: Buffer) => {
 				const message = new Message();
 				const request = message.identify(data);
 				switch (request) {
 					case 'unidentified':
 						break;
 					case 'BOOTP':
-						const { bootPBuff, bootPServerConfig } = message.getBOOTPResponse(
-							data,
-							serverConfig,
-						);
-						serverConfig = bootPServerConfig;
-						this.transfer(device, outEndpoint, request, bootPBuff, step++);
+						const bootPBuff = message.getBOOTPResponse(data, serverConfig);
+						await this.transfer(device, outEndpoint, bootPBuff, step++);
 						break;
 					case 'ARP':
-						const { arpBuff, arpServerConfig } = message.getARResponse(
-							data,
-							serverConfig,
-						);
-						serverConfig = arpServerConfig;
-						this.transfer(device, outEndpoint, request, arpBuff, step++);
+						const arpBuff = message.getARResponse(data, serverConfig);
+						await this.transfer(device, outEndpoint, arpBuff, step++);
 						break;
 					case 'TFTP':
-						serverConfig = message.getBootFile(data, serverConfig);
+						message.getBootFile(data, serverConfig);
 						if (!serverConfig.tftp.fileError) {
 							// tslint:disable-next-line
-							const { tftpBuff, tftpServerConfig } = message.getTFTPData(
-								serverConfig,
-							);
-							serverConfig = tftpServerConfig;
-							this.transfer(device, outEndpoint, request, tftpBuff, step++);
+							const tftpBuff = message.getTFTPData(serverConfig);
+							await this.transfer(device, outEndpoint, tftpBuff, step++);
 						} else {
-							this.transfer(
+							await this.transfer(
 								device,
 								outEndpoint,
-								request,
 								message.getTFTPError(serverConfig),
 								step,
 							);
 						}
 						break;
 					case 'TFTP_Data':
-						const { tftpBuff, tftpServerConfig } = message.getTFTPData(
-							serverConfig,
-						);
-						serverConfig = tftpServerConfig;
+						const tftpBuff = message.getTFTPData(serverConfig);
 						if (serverConfig.tftp) {
 							if (serverConfig.tftp.blocks <= serverConfig.tftp.blocks) {
-								this.transfer(device, outEndpoint, request, tftpBuff, step++);
+								await this.transfer(device, outEndpoint, tftpBuff, step++);
 							} else {
 								if (platform === 'win32' || platform === 'darwin') {
 									rndisInEndpoint.stopPoll();
@@ -353,35 +338,23 @@ export class UsbBBbootScanner extends EventEmitter {
 			this.remove(device);
 		}
 	}
-	private transfer(
+	private async transfer(
 		device: usb.Device,
 		outEndpoint: usb.OutEndpoint,
-		request: any,
-		response: any,
+		response: Buffer,
 		step: number,
-	): Promise<any> {
-		return new Promise((resolve, reject) => {
-			outEndpoint.transfer(response, (cb: any) => {
-				if (!cb) {
-					if (request === 'BOOTP') {
-						this.step(device, step);
-					}
-					if (request === 'ARP') {
-						this.step(device, step);
-					}
-					if (request === 'TFTP') {
-						this.step(device, step);
-					}
-					if (request === 'TFTP_Data') {
-						this.step(device, step);
-					}
+	) {
+		await new Promise<void>((resolve, reject) => {
+			outEndpoint.transfer(response, (error?: Error) => {
+				if (!error) {
+					resolve();
 				} else {
-					debug('Out transfer Error', cb);
-					reject(cb);
+					debug('Out transfer Error', error);
+					reject(error);
 				}
 			});
-			resolve(true);
 		});
+		this.step(device, step);
 	}
 	private detachDevice(device: usb.Device): void {
 		this.attachedDeviceIds.delete(getDeviceId(device));

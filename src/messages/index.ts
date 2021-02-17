@@ -32,7 +32,7 @@ export class Message {
 		this.parser = new Parser();
 		this.encoder = new Encoder();
 	}
-	public identify(buff: any): string {
+	public identify(buff: Buffer): string {
 		const parser = new Parser();
 		const ether = parser.parseEthHdr(buff.slice(RNDIS_SIZE));
 		if (ether.h_proto === ETH_TYPE_ARP) {
@@ -93,10 +93,7 @@ export class Message {
 	}
 
 	// Function to process BOOTP request
-	public getBOOTPResponse(
-		data: any,
-		serverConfig: any,
-	): { bootPBuff: Buffer; bootPServerConfig: any } {
+	public getBOOTPResponse(data: Buffer, serverConfig: any): Buffer {
 		const etherBuf = Buffer.alloc(MAXBUF - RNDIS_SIZE);
 		const udpBuf = Buffer.alloc(UDP_SIZE);
 		const bootpBuf = Buffer.alloc(BOOTP_SIZE);
@@ -138,18 +135,10 @@ export class Message {
 			BB_IP,
 			SERVER_IP,
 		);
-		const bootPBuff = Buffer.concat(
-			[rndis, eth2, ip, udp, bootreply],
-			FULL_SIZE,
-		);
-		const bootPServerConfig = serverConfig;
-		return { bootPBuff, bootPServerConfig };
+		return Buffer.concat([rndis, eth2, ip, udp, bootreply], FULL_SIZE);
 	}
 	// Function to process ARP request
-	public getARResponse(
-		data: any,
-		serverConfig: any,
-	): { arpBuff: Buffer; arpServerConfig: any } {
+	public getARResponse(data: Buffer, serverConfig: any): Buffer {
 		const arpBuf = Buffer.alloc(ARP_SIZE);
 		data.copy(
 			arpBuf,
@@ -171,15 +160,13 @@ export class Message {
 			serverConfig.ether.h_dest,
 			ETH_TYPE_ARP,
 		);
-		const arpBuff = Buffer.concat(
+		return Buffer.concat(
 			[rndis, eth2, arpResponse],
 			RNDIS_SIZE + ETHER_SIZE + ARP_SIZE,
 		);
-		const arpServerConfig = serverConfig;
-		return { arpBuff, arpServerConfig };
 	}
 	// Event to process TFTP request
-	public getBootFile(data: any, serverConfig: any): any {
+	public getBootFile(data: Buffer, serverConfig: any) {
 		const udpTFTPBuf = Buffer.alloc(UDP_SIZE);
 		data.copy(
 			udpTFTPBuf,
@@ -205,12 +192,9 @@ export class Message {
 		} else {
 			serverConfig.tftp.fileError = true;
 		}
-		return serverConfig;
 	}
 	// Function to process File data for TFTP
-	public getTFTPData(
-		serverConfig: any,
-	): { tftpBuff: Buffer; tftpServerConfig: any } {
+	public getTFTPData(serverConfig: any): Buffer {
 		let blockSize = serverConfig.tftp.fileData.length - serverConfig.tftp.start;
 		if (blockSize > 512) {
 			blockSize = 512;
@@ -241,12 +225,10 @@ export class Message {
 		);
 		const tftp = this.encoder.makeTFTP(3, serverConfig.tftp.i);
 		serverConfig.tftp.i++;
-		const tftpBuff = Buffer.concat(
+		return Buffer.concat(
 			[rndis, serverConfig.tftp.eth2, ip, udp, tftp, blockData],
 			RNDIS_SIZE + ETHER_SIZE + IPV4_SIZE + UDP_SIZE + TFTP_SIZE + blockSize,
 		);
-		const tftpServerConfig = serverConfig;
-		return { tftpBuff, tftpServerConfig };
 	}
 	// Function to handle TFTP error
 	public getTFTPError(serverConfig: any): Buffer {
@@ -286,7 +268,7 @@ export class Message {
 		return this.encoder.makeRNDISSet();
 	}
 	// Function to extract FileName from TFTP packet
-	public extractName(data: any) {
+	private extractName(data: Buffer) {
 		const fv = RNDIS_SIZE + ETHER_SIZE + IPV4_SIZE + UDP_SIZE + 2;
 		let nameCount = 0;
 		let name = '';
@@ -295,9 +277,5 @@ export class Message {
 			nameCount++;
 		}
 		return name;
-	}
-	public async getFileBuffer(filename: string): Promise<Buffer | undefined> {
-		const buffer = await safeReadFile(filename);
-		return buffer;
 	}
 }
