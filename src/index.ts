@@ -234,7 +234,10 @@ export class UsbBBbootScanner extends EventEmitter {
 		}
 		this.attachedDeviceIds.add(getDeviceId(device));
 
-		if (isBeagleBoneInMassStorageMode(device)) {
+		if (
+			isBeagleBoneInMassStorageMode(device) &&
+			this.usbBBbootDevices.has(devicePortId(device))
+		) {
 			this.step(device, UsbBBbootDevice.LAST_STEP);
 			return;
 		}
