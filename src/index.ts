@@ -305,7 +305,9 @@ export class UsbBBbootScanner extends EventEmitter {
 					message.getBootFile(data, serverConfig);
 					if (!serverConfig.tftp.fileError) {
 						const tftpBuff = message.getTFTPData(serverConfig);
-						await this.transfer(device, outEndpoint, tftpBuff);
+						if (tftpBuff !== undefined) {
+							await this.transfer(device, outEndpoint, tftpBuff);
+						}
 					} else {
 						await this.transfer(
 							device,
@@ -316,7 +318,7 @@ export class UsbBBbootScanner extends EventEmitter {
 				} else if (request === 'TFTP_Data') {
 					const tftpBuff = message.getTFTPData(serverConfig);
 					if (serverConfig.tftp) {
-						if (serverConfig.tftp.blocks <= serverConfig.tftp.blocks) {
+						if (tftpBuff !== undefined) {
 							await this.transfer(device, outEndpoint, tftpBuff);
 						} else {
 							if (platform === 'win32' || platform === 'darwin') {

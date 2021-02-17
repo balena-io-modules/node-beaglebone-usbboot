@@ -1,5 +1,6 @@
 import { Encoder, Parser } from './protocols';
 import { safeReadFile } from './protocols/util';
+
 const BOOTPS = 67;
 const BOOTPC = 68;
 const IP_UDP = 17;
@@ -25,6 +26,7 @@ const FULL_SIZE = 386;
 const SERVER_NAME = [66, 69, 65, 71, 76, 69, 66, 79, 79, 84]; // ASCII ['B','E','A','G','L','E','B','O','O','T']
 const ARP_SIZE = 28;
 const TFTP_SIZE = 4;
+
 export class Message {
 	private parser: Parser;
 	private encoder: Encoder;
@@ -185,7 +187,6 @@ export class Message {
 		const fileName = this.extractName(data);
 		const buff = safeReadFile(fileName);
 		if (buff !== undefined) {
-			serverConfig.tftp.blocks = Math.ceil((buff.length + 1) / 512); // Total number of blocks of file
 			serverConfig.tftp.start = 0;
 			serverConfig.tftp.fileData = buff;
 			serverConfig.tftp.fileError = false;
@@ -194,10 +195,19 @@ export class Message {
 		}
 	}
 	// Function to process File data for TFTP
-	public getTFTPData(serverConfig: any): Buffer {
+	public getTFTPData(serverConfig: any): Buffer | undefined {
+		// From https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol :
+		// The final DATA packet must contain less than a full-sized block of data (512 bytes) to signal that it is the last.
+		// If the size of the transferred file is an exact multiple of the block-size, the source sends a final DATA packet containing 0 bytes of data.
+		if (serverConfig.tftp.lastChunkSent) {
+			return;
+		}
 		let blockSize = serverConfig.tftp.fileData.length - serverConfig.tftp.start;
 		if (blockSize > 512) {
 			blockSize = 512;
+		}
+		if (blockSize < 512) {
+			serverConfig.tftp.lastChunkSent = true;
 		}
 		const blockData = Buffer.alloc(blockSize);
 		serverConfig.tftp.fileData.copy(
