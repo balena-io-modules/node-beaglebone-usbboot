@@ -1,4 +1,3 @@
-// tslint:disable:no-bitwise
 import * as usb from '@balena.io/usb';
 import * as _debug from 'debug';
 import { EventEmitter } from 'events';
