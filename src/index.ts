@@ -3,7 +3,10 @@ import * as usb from '@balena.io/usb';
 import * as _debug from 'debug';
 import { EventEmitter } from 'events';
 import * as _os from 'os';
+import { setInterval, clearInterval } from 'timers';
+
 import { Message } from './messages';
+
 const platform = _os.platform();
 const debug = _debug('node-beaglebone-usbboot');
 
@@ -155,7 +158,7 @@ export class UsbBBbootScanner extends EventEmitter {
 	private usbBBbootDevices = new Map<string, UsbBBbootDevice>();
 	private boundAttachDevice: (device: usb.Device) => Promise<void>;
 	private boundDetachDevice: (device: usb.Device) => void;
-	private interval: number | undefined;
+	private interval: NodeJS.Timeout | undefined;
 
 	// We use both events ('attach' and 'detach') and polling getDeviceList() on usb.
 	// We don't know which one will trigger the this.attachDevice call.
@@ -181,9 +184,6 @@ export class UsbBBbootScanner extends EventEmitter {
 		// Watch for devices detaching
 		usb.on('detach', this.boundDetachDevice);
 
-		// ts-ignore because of a confusion between NodeJS.Timer and number
-		// @ts-ignore
-
 		this.interval = setInterval(() => {
 			usb.getDeviceList().forEach(this.boundAttachDevice);
 		}, POLLING_INTERVAL_MS);
@@ -192,7 +192,9 @@ export class UsbBBbootScanner extends EventEmitter {
 	public stop(): void {
 		usb.removeListener('attach', this.boundAttachDevice);
 		usb.removeListener('detach', this.boundDetachDevice);
-		clearInterval(this.interval);
+		if (this.interval !== undefined) {
+			clearInterval(this.interval);
+		}
 		this.usbBBbootDevices.clear();
 	}
 
