@@ -1,4 +1,14 @@
 - commits:
+    - subject: Update debut to v4
+      hash: f66fed9b1eaf9eb9a9fc3f637a68ea983824d5fe
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Alexis Svinartchouk
+  version: 1.0.3
+  date: 2021-02-18T11:28:36.291Z
+- commits:
     - subject: Stop sending file chunks when the file was fully sent
       hash: a85609c1d81c19364e5585e6d6b3289571c4210a
       body: ''
