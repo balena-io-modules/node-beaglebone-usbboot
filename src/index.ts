@@ -153,6 +153,11 @@ const initializeRNDIS = (device: usb.Device): usb.InEndpoint => {
 	return iEndpoint;
 };
 
+const stopPoll = async (inEndpoint: usb.InEndpoint) => (
+	new Promise<void>(res => {
+		inEndpoint.stopPoll(res)
+	})
+)
 export class UsbBBbootScanner extends EventEmitter {
 	private usbBBbootDevices = new Map<string, UsbBBbootDevice>();
 	private boundAttachDevice: (device: usb.Device) => Promise<void>;
@@ -322,9 +327,9 @@ export class UsbBBbootScanner extends EventEmitter {
 							await this.transfer(device, outEndpoint, tftpBuff);
 						} else {
 							if (platform === 'win32' || platform === 'darwin') {
-								rndisInEndpoint.stopPoll();
+								await stopPoll(rndisInEndpoint);
 							}
-							inEndpoint.stopPoll();
+							await stopPoll(inEndpoint);
 							device.close();
 						}
 					}
