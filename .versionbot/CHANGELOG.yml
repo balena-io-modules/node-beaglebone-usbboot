@@ -1,4 +1,14 @@
 - commits:
+    - subject: await stop poll
+      hash: 6f697ddf71febdd759a36c0d188332f82ed71bb0
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Zane Hitchcox
+  version: 1.0.4
+  date: 2021-02-18T21:54:16.893Z
+- commits:
     - subject: Update debut to v4
       hash: f66fed9b1eaf9eb9a9fc3f637a68ea983824d5fe
       body: ''
