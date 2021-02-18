@@ -36,7 +36,7 @@
   "dependencies": {
     "@balena.io/usb": "^1.3.13",
     "binary-parser-encoder": "^1.4.5",
-    "debug": "^3.1.0",
+    "debug": "^4.3.1",
     "endian-toggle": "0.0.0",
     "schemapack": "^1.4.2"
   },
