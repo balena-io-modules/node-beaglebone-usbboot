@@ -7,7 +7,7 @@ This is heavily based on [node-beagle-boot](https://github.com/ravikp7/node-beag
 
 On most GNU/Linux distributions, you'll need to run this as root.
 
-```npm install```
+```npm ci```
 
 ```sudo npm start```
 
