@@ -160,11 +160,10 @@ const initializeRNDIS = (device: usb.Device): usb.InEndpoint => {
 	return iEndpoint;
 };
 
-const stopPoll = async (inEndpoint: usb.InEndpoint) => (
-	new Promise<void>(res => {
-		inEndpoint.stopPoll(res)
-	})
-)
+const stopPoll = async (inEndpoint: usb.InEndpoint) =>
+	new Promise<void>((res) => {
+		inEndpoint.stopPoll(res);
+	});
 export class UsbBBbootScanner extends EventEmitter {
 	private usbBBbootDevices = new Map<string, UsbBBbootDevice>();
 	private boundAttachDevice: (device: usb.Device) => Promise<void>;
@@ -377,11 +376,14 @@ export class UsbBBbootScanner extends EventEmitter {
 			debug('Device closed.');
 		} catch (error: any) {
 			const errorMessage: string = error.message;
-			if (tries < MAX_CLOSE_DEVICE_TRIES && errorMessage === 'Can\'t close device with a pending request') {
-				debug('Retrying device.close()...')
+			if (
+				tries < MAX_CLOSE_DEVICE_TRIES &&
+				errorMessage === "Can't close device with a pending request"
+			) {
+				debug('Retrying device.close()...');
 				setTimeout(() => {
 					this.closeDevice(device, tries + 1);
-				},150)
+				}, 150);
 			} else {
 				console.error(error);
 			}
