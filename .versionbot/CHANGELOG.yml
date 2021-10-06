@@ -1,4 +1,56 @@
 - commits:
+    - subject: 'patch: Add package-lock.json'
+      hash: 1e053204d07d3281f7c6855db46fd852d8434118
+      body: ''
+      footer:
+        Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+        signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+      author: Lorenzo Alberto Maria Ambrosi
+    - subject: 'patch: Fix linting'
+      hash: 4acb7881a815489d47df234a670701b6305c0df7
+      body: ''
+      footer:
+        Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+        signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+      author: Lorenzo Alberto Maria Ambrosi
+    - subject: await stop poll
+      hash: f73888cdcd235e25a5527e2983176e62988f1c04
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Zane Hitchcox
+    - subject: 'minor: Retry closing device when busy'
+      hash: 4978365e51e5d91a6bd1e8b4821dc21c51821844
+      body: ''
+      footer:
+        Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+        signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+      author: Lorenzo Alberto Maria Ambrosi
+    - subject: 'patch: Update dependencies'
+      hash: 0390ab7f9b177b3993da94c755d42639c87f8c0d
+      body: ''
+      footer:
+        Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+        signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+      author: Lorenzo Alberto Maria Ambrosi
+    - subject: 'patch: Add .resinci.yml'
+      hash: 6b267545973c012379e477f7d457904a3d12bcc7
+      body: ''
+      footer:
+        Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+        signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+      author: Lorenzo Alberto Maria Ambrosi
+    - subject: 'major: Switch to tessel/node-usb'
+      hash: 22ebf7ed0e91261c1571f18ff7c262ed86adfaa2
+      body: ''
+      footer:
+        Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+        signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
+      author: Lorenzo Alberto Maria Ambrosi
+  version: 2.0.0
+  date: 2021-10-04T15:28:53.755Z
+- commits:
     - subject: Update debut to v4
       hash: f66fed9b1eaf9eb9a9fc3f637a68ea983824d5fe
       body: ''
