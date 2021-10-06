@@ -1,4 +1,4 @@
-import * as usb from '@balena.io/usb';
+import * as usb from 'usb';
 import * as _debug from 'debug';
 import { EventEmitter } from 'events';
 import * as _os from 'os';
@@ -16,10 +16,12 @@ const DEVICE_UNPLUG_TIMEOUT = 5000;
 const USB_VENDOR_ID_TEXAS_INSTRUMENTS = 0x0451;
 const USB_PRODUCT_ID_ROM = 0x6141;
 const USB_PRODUCT_ID_SPL = 0xd022;
+const MAX_CLOSE_DEVICE_TRIES = 2;
 
 const getDeviceId = (device: usb.Device): string => {
 	return `${device.busNumber}:${device.deviceAddress}`;
 };
+
 export const isUsbBootCapableUSBDevice = (
 	idVendor: number,
 	idProduct: number,
@@ -29,6 +31,7 @@ export const isUsbBootCapableUSBDevice = (
 		(idProduct === USB_PRODUCT_ID_ROM || idProduct === USB_PRODUCT_ID_SPL)
 	);
 };
+
 export const isROMUSBDevice = (
 	idVendor: number,
 	idProduct: number,
@@ -47,12 +50,14 @@ export const isSPLUSBDevice = (
 		idProduct === USB_PRODUCT_ID_SPL
 	);
 };
+
 const isUsbBootCapableUSBDevice$ = (device: usb.Device): boolean => {
 	return isUsbBootCapableUSBDevice(
 		device.deviceDescriptor.idVendor,
 		device.deviceDescriptor.idProduct,
 	);
 };
+
 const isBeagleBoneInMassStorageMode = (device: usb.Device): boolean => {
 	return (
 		device.deviceDescriptor.idVendor === USB_VENDOR_ID_TEXAS_INSTRUMENTS &&
@@ -60,6 +65,7 @@ const isBeagleBoneInMassStorageMode = (device: usb.Device): boolean => {
 		device.deviceDescriptor.bNumConfigurations === 1
 	);
 };
+
 const initializeDevice = (
 	device: usb.Device,
 ): {
@@ -88,6 +94,7 @@ const initializeDevice = (
 	debug('Initialized device correctly', devicePortId(device));
 	return { inEndpoint, outEndpoint };
 };
+
 const initializeRNDIS = (device: usb.Device): usb.InEndpoint => {
 	const interfaceNumber = 0;
 	const iface0 = device.interface(interfaceNumber);
@@ -153,6 +160,10 @@ const initializeRNDIS = (device: usb.Device): usb.InEndpoint => {
 	return iEndpoint;
 };
 
+const stopPoll = async (inEndpoint: usb.InEndpoint) =>
+	new Promise<void>((res) => {
+		inEndpoint.stopPoll(res);
+	});
 export class UsbBBbootScanner extends EventEmitter {
 	private usbBBbootDevices = new Map<string, UsbBBbootDevice>();
 	private boundAttachDevice: (device: usb.Device) => Promise<void>;
@@ -169,6 +180,7 @@ export class UsbBBbootScanner extends EventEmitter {
 		this.boundAttachDevice = this.attachDevice.bind(this);
 		this.boundDetachDevice = this.detachDevice.bind(this);
 	}
+
 	public start(): void {
 		debug('Waiting for BeagleBone');
 
@@ -273,6 +285,7 @@ export class UsbBBbootScanner extends EventEmitter {
 			}, 500);
 		}
 	}
+
 	private process(device: usb.Device, fileName: string): void {
 		try {
 			device.open();
@@ -322,10 +335,10 @@ export class UsbBBbootScanner extends EventEmitter {
 							await this.transfer(device, outEndpoint, tftpBuff);
 						} else {
 							if (platform === 'win32' || platform === 'darwin') {
-								rndisInEndpoint.stopPoll();
+								await stopPoll(rndisInEndpoint);
 							}
-							inEndpoint.stopPoll();
-							device.close();
+							await stopPoll(inEndpoint);
+							this.closeDevice(device, 0);
 						}
 					}
 				} else {
@@ -337,6 +350,7 @@ export class UsbBBbootScanner extends EventEmitter {
 			this.remove(device);
 		}
 	}
+
 	private async transfer(
 		device: usb.Device,
 		outEndpoint: usb.OutEndpoint,
@@ -354,6 +368,28 @@ export class UsbBBbootScanner extends EventEmitter {
 		});
 		this.incrementStep(device);
 	}
+
+	private closeDevice(device: usb.Device, tries: number): void {
+		try {
+			debug('Closing device...');
+			device.close();
+			debug('Device closed.');
+		} catch (error: any) {
+			const errorMessage: string = error.message;
+			if (
+				tries < MAX_CLOSE_DEVICE_TRIES &&
+				errorMessage === "Can't close device with a pending request"
+			) {
+				debug('Retrying device.close()...');
+				setTimeout(() => {
+					this.closeDevice(device, tries + 1);
+				}, 150);
+			} else {
+				console.error(error);
+			}
+		}
+	}
+
 	private detachDevice(device: usb.Device): void {
 		this.attachedDeviceIds.delete(getDeviceId(device));
 		if (!isUsbBootCapableUSBDevice$(device)) {

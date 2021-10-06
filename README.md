@@ -5,11 +5,18 @@ Transforms BeagleBone to mass storage device
 This is heavily based on [node-beagle-boot](https://github.com/ravikp7/node-beagle-boot) & 
 [node-raspberrypi-usbboot](https://github.com/balena-io-modules/node-raspberrypi-usbboot)
 
-On most GNU/Linux distributions, you'll need to run this as root.
+Install modules:
 
-```npm install```
+```bash
+npm ci
+```
 
-```sudo npm start```
+Run the script:
+> NOTE: On most GNU/Linux distributions you'll need to run this as root.
+
+```bash
+npm start
+```
 
 Now that everything is ready, we can transform BeagleBone to mass storage device:
 * Makeing sure the device is powered off
