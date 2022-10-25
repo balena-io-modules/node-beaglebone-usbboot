@@ -1,49 +1,60 @@
 - commits:
-    - subject: 'patch: Add package-lock.json'
+    - subject: add flowzone
+      hash: 861ae8001567a8b10e608797e882e21386f5079b
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Zane Hitchcox
+  version: 2.0.1
+  title: "'Update dependencies'"
+  date: 2022-10-25T18:39:21.978Z
+- commits:
+    - subject: "patch: Add package-lock.json"
       hash: 1e053204d07d3281f7c6855db46fd852d8434118
-      body: ''
+      body: ""
       footer:
         Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
         signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
       author: Lorenzo Alberto Maria Ambrosi
-    - subject: 'patch: Fix linting'
+    - subject: "patch: Fix linting"
       hash: 4acb7881a815489d47df234a670701b6305c0df7
-      body: ''
+      body: ""
       footer:
         Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
         signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
       author: Lorenzo Alberto Maria Ambrosi
     - subject: await stop poll
       hash: f73888cdcd235e25a5527e2983176e62988f1c04
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Zane Hitchcox
-    - subject: 'minor: Retry closing device when busy'
+    - subject: "minor: Retry closing device when busy"
       hash: 4978365e51e5d91a6bd1e8b4821dc21c51821844
-      body: ''
+      body: ""
       footer:
         Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
         signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
       author: Lorenzo Alberto Maria Ambrosi
-    - subject: 'patch: Update dependencies'
+    - subject: "patch: Update dependencies"
       hash: 0390ab7f9b177b3993da94c755d42639c87f8c0d
-      body: ''
+      body: ""
       footer:
         Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
         signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
       author: Lorenzo Alberto Maria Ambrosi
-    - subject: 'patch: Add .resinci.yml'
+    - subject: "patch: Add .resinci.yml"
       hash: 6b267545973c012379e477f7d457904a3d12bcc7
-      body: ''
+      body: ""
       footer:
         Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
         signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
       author: Lorenzo Alberto Maria Ambrosi
-    - subject: 'major: Switch to tessel/node-usb'
+    - subject: "major: Switch to tessel/node-usb"
       hash: 22ebf7ed0e91261c1571f18ff7c262ed86adfaa2
-      body: ''
+      body: ""
       footer:
         Signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
         signed-off-by: Lorenzo Alberto Maria Ambrosi <lorenzothunder.ambrosi@gmail.com>
@@ -53,7 +64,7 @@
 - commits:
     - subject: Update debut to v4
       hash: f66fed9b1eaf9eb9a9fc3f637a68ea983824d5fe
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
@@ -63,65 +74,64 @@
 - commits:
     - subject: Stop sending file chunks when the file was fully sent
       hash: a85609c1d81c19364e5585e6d6b3289571c4210a
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Alexis Svinartchouk
     - subject: Ignore package-lock.json file
       hash: c6cee6ece3fea88d1c810d0ef3ad9831448d8dc7
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Alexis Svinartchouk
     - subject: Fix progress going from 18 to 0 then to 100
       hash: 9cc2d2c5371eb3dbcb771cc884f40bdd0bd69c18
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Alexis Svinartchouk
-    - subject: 'Transform switch into if / else, remove tslint: disable comment'
+    - subject: "Transform switch into if / else, remove tslint: disable comment"
       hash: 39d7eee6074fa48679091cd21f27d041cd6b551e
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Alexis Svinartchouk
-    - subject: >-
-        Add some typing, stop returning duplicated references, actually wait for
-        transfers to complete
+    - subject: Add some typing, stop returning duplicated references, actually wait
+        for transfers to complete
       hash: 50b206480cc2ca772a7524d7da3201cd4ce017f9
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Alexis Svinartchouk
-    - subject: 'Remove unused tslint:disable comment'
+    - subject: Remove unused tslint:disable comment
       hash: cea4197d4a98384ee40ea11c46f7bebdaeddbce7
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Alexis Svinartchouk
     - subject: Remove ts-ignore comment next to setInterval
       hash: 504eb3ae3a69dd4d13735ebf49df4b8f951e7e98
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Alexis Svinartchouk
     - subject: Don't detect beagle bones that are already mass storage devices
       hash: 38a283b29f72b6ac99e62912a5c3262850132675
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
       author: Alexis Svinartchouk
     - subject: Add versionbot yml changelog file
       hash: ac26de8d2d50065f17f46a9319bb478e2d847043
-      body: ''
+      body: ""
       footer:
         Change-type: patch
         change-type: patch
@@ -147,7 +157,7 @@
       author: Alexis Svinartchouk
       footers:
         change-type: patch
-      subject: 'Update @types/node to v12, @types/usb is a dev dependency'
+      subject: Update @types/node to v12, @types/usb is a dev dependency
       body: null
     - hash: 676ce8163cdc3e50d4766d306298805d03acabbb
       author: Alexis Svinartchouk
