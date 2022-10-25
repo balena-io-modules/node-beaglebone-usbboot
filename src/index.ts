@@ -1,4 +1,4 @@
-import * as usb from 'usb';
+import { OutEndpoint, InEndpoint, usb } from 'usb';
 import * as _debug from 'debug';
 import { EventEmitter } from 'events';
 import * as _os from 'os';
@@ -69,10 +69,10 @@ const isBeagleBoneInMassStorageMode = (device: usb.Device): boolean => {
 const initializeDevice = (
 	device: usb.Device,
 ): {
-	inEndpoint: usb.InEndpoint;
-	outEndpoint: usb.OutEndpoint;
+	inEndpoint: InEndpoint;
+	outEndpoint: OutEndpoint;
 } => {
-	debug('bInterface', device.configDescriptor.bNumInterfaces);
+	debug('bInterface', device.configDescriptor?.bNumInterfaces);
 	const interfaceNumber = 1;
 	const iface = device.interface(interfaceNumber);
 	if (platform !== 'win32') {
@@ -85,23 +85,23 @@ const initializeDevice = (
 	iface.claim();
 	const inEndpoint = iface.endpoints[0];
 	const outEndpoint = iface.endpoints[1];
-	if (!(inEndpoint instanceof usb.InEndpoint)) {
-		throw new Error('endpoint is not an usb.OutEndpoint');
+	if (!(inEndpoint instanceof InEndpoint)) {
+		throw new Error('endpoint is not an OutEndpoint');
 	}
-	if (!(outEndpoint instanceof usb.OutEndpoint)) {
-		throw new Error('endpoint is not an usb.OutEndpoint');
+	if (!(outEndpoint instanceof OutEndpoint)) {
+		throw new Error('endpoint is not an OutEndpoint');
 	}
 	debug('Initialized device correctly', devicePortId(device));
 	return { inEndpoint, outEndpoint };
 };
 
-const initializeRNDIS = (device: usb.Device): usb.InEndpoint => {
+const initializeRNDIS = (device: usb.Device): InEndpoint => {
 	const interfaceNumber = 0;
 	const iface0 = device.interface(interfaceNumber);
 	iface0.claim();
 	const iEndpoint = iface0.endpoints[0];
-	if (!(iEndpoint instanceof usb.InEndpoint)) {
-		throw new Error('endpoint is not an usb.OutEndpoint');
+	if (!(iEndpoint instanceof InEndpoint)) {
+		throw new Error('endpoint is not an OutEndpoint');
 	} else {
 		iEndpoint.startPoll(1, 256);
 	}
@@ -160,7 +160,7 @@ const initializeRNDIS = (device: usb.Device): usb.InEndpoint => {
 	return iEndpoint;
 };
 
-const stopPoll = async (inEndpoint: usb.InEndpoint) =>
+const stopPoll = async (inEndpoint: InEndpoint) =>
 	new Promise<void>((res) => {
 		inEndpoint.stopPoll(res);
 	});
@@ -289,7 +289,7 @@ export class UsbBBbootScanner extends EventEmitter {
 	private process(device: usb.Device, fileName: string): void {
 		try {
 			device.open();
-			let rndisInEndpoint: usb.InEndpoint;
+			let rndisInEndpoint: InEndpoint;
 			if (platform === 'win32' || platform === 'darwin') {
 				rndisInEndpoint = initializeRNDIS(device);
 				rndisInEndpoint.on('error', (error: Error) => {
@@ -334,7 +334,7 @@ export class UsbBBbootScanner extends EventEmitter {
 						if (tftpBuff !== undefined) {
 							await this.transfer(device, outEndpoint, tftpBuff);
 						} else {
-							if (platform === 'win32' || platform === 'darwin') {
+							if (platform === 'win32') {
 								await stopPoll(rndisInEndpoint);
 							}
 							await stopPoll(inEndpoint);
@@ -353,7 +353,7 @@ export class UsbBBbootScanner extends EventEmitter {
 
 	private async transfer(
 		device: usb.Device,
-		outEndpoint: usb.OutEndpoint,
+		outEndpoint: OutEndpoint,
 		response: Buffer,
 	) {
 		await new Promise<void>((resolve, reject) => {
