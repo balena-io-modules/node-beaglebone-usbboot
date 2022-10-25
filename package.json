@@ -56,5 +56,8 @@
   "homepage": "https://github.com/balena-io-modules/node-beaglebone-usbboot#readme",
   "versionist": {
     "publishedAt": "2021-10-04T15:28:53.807Z"
+  },
+  "engines": {
+    "node": ">=14 < 18"
   }
 }
