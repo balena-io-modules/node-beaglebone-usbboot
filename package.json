@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "test": "echo 'This is tested with a physical device'",
     "start": "ts-node src/main.ts",
     "format": "balena-lint --fix src",
     "lint": "balena-lint src",
