@@ -1,4 +1,17 @@
 - commits:
+    - subject: "chore(deps): update node.js to 18.11.0"
+      hash: 6ee6cdaec8b345199df3355b3f683b7796aacb4f
+      body: |
+        Update node to 18.11.0
+
+        Update node from 17.9.1 to 18.11.0
+      footer:
+        Change-type: minor
+        change-type: minor
+      author: Renovate Bot
+  version: 2.1.0
+  date: 2022-10-31T23:44:59.202Z
+- commits:
     - subject: add flowzone
       hash: 22c83b30c9d44fe24909b13459a6e4c597e97ef9
       body: ""
