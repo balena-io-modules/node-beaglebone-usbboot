@@ -1,4 +1,18 @@
 - commits:
+    - subject: "chore(deps): update dependency @types/node to 18.11.18"
+      hash: cf532309dab444b28bdfe4f0593d7b34f7713fb7
+      body: |
+        Update @types/node to 18.11.18
+
+        Update @types/node from 16.18.0 to 18.11.18
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+  version: 3.0.1
+  title: ""
+  date: 2023-01-20T16:52:46.700Z
+- commits:
     - subject: Drop support for Node 14 and add support for Node 18
       hash: afb3878d4857d5c347a5f6301652b25a55cec752
       body: ""
