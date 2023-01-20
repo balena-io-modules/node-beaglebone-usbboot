@@ -1,4 +1,15 @@
 - commits:
+    - subject: Drop support for Node 14 and add support for Node 18
+      hash: afb3878d4857d5c347a5f6301652b25a55cec752
+      body: ""
+      footer:
+        Change-type: major
+        change-type: major
+      author: dfunckt
+  version: 3.0.0
+  title: ""
+  date: 2023-01-20T14:55:57.389Z
+- commits:
     - subject: add flowzone
       hash: 22c83b30c9d44fe24909b13459a6e4c597e97ef9
       body: ""
