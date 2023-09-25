@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update dependency @types/debug to v4.1.9
+      hash: b3108b25ac4fc2dd3456828020b434b151837be4
+      body: |
+        Update @types/debug from 4.1.7 to 4.1.9
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Self-hosted Renovate Bot
+  version: 3.0.3
+  title: ""
+  date: 2023-09-25T22:47:19.630Z
+- commits:
     - subject: "chore(deps): update dependency rimraf to 4.1.1"
       hash: dc97d334ac6579ba5fdf04c34e1986fe2dd3a8d8
       body: |
