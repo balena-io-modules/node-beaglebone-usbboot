@@ -1,6 +1,6 @@
 {
   "name": "@balena/node-beaglebone-usbboot",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Transforms BeagleBone to mass storage device",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -55,7 +55,7 @@
   },
   "homepage": "https://github.com/balena-io-modules/node-beaglebone-usbboot#readme",
   "versionist": {
-    "publishedAt": "2023-09-25T22:47:19.718Z"
+    "publishedAt": "2024-01-02T19:47:09.102Z"
   },
   "engines": {
     "node": ">=16"

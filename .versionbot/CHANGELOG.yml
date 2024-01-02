@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update dependency @types/debug to v4.1.12
+      hash: 120e574a6978223dafca09aedaadb94007ea0f38
+      body: |
+        Update @types/debug from 4.1.9 to 4.1.12
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Self-hosted Renovate Bot
+  version: 3.0.4
+  title: ""
+  date: 2024-01-02T19:47:09.039Z
+- commits:
     - subject: Update dependency @types/debug to v4.1.9
       hash: b3108b25ac4fc2dd3456828020b434b151837be4
       body: |
