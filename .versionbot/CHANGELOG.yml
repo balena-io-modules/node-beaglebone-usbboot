@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update dependency rimraf to ^4.1.1
+      hash: 48aa7a87d4eb9e9023ccc3cd28584f71b5d15d71
+      body: |
+        Update rimraf from 4.1.1 to 4.1.4
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+  version: 3.0.6
+  title: ""
+  date: 2026-05-16T00:17:44.201Z
+- commits:
     - subject: "Add id-token: write permission for NPM OIDC publishing"
       hash: 2ab32670f00276e1151528020e3739087712d25e
       body: ""
