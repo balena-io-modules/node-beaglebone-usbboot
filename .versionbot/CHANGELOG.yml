@@ -1,4 +1,16 @@
 - commits:
+    - subject: Pin dependencies
+      hash: 25e0dfe8c0491d20706e485fd0588a886ae7bae0
+      body: |
+        Update @types/node
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+  version: 3.0.7
+  title: ""
+  date: 2026-07-16T06:38:24.000Z
+- commits:
     - subject: Update dependency rimraf to ^4.1.1
       hash: 48aa7a87d4eb9e9023ccc3cd28584f71b5d15d71
       body: |
