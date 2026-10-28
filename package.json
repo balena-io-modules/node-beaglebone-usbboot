@@ -43,7 +43,7 @@
     "usb": "^2.5.2"
   },
   "devDependencies": {
-    "@balena/lint": "^6.2.0",
+    "@balena/lint": "^9.0.0",
     "@types/debug": "4.1.12",
     "@types/node": "18.11.18",
     "rimraf": "4.4.1",
